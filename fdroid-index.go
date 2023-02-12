@@ -2,19 +2,27 @@ package main
 
 import (
 	"bytes"
+	_ "embed"
 	"encoding/hex"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
+	"encoding/json"
 
 	"github.com/avast/apkparser"
 	"github.com/avast/apkverifier"
+	"github.com/itchyny/gojq"
+	"github.com/pelletier/go-toml/v2"
 )
 
+//go:embed transform.jq
+var transform string
+
 func main() {
+	query, _ := gojq.Parse(transform)
+
 	if len(os.Args) != 2 {
 		fmt.Fprintf(os.Stderr, "Usage: %s <fdroid repo url including fingerprint>", os.Args[0])
 		os.Exit(1)
@@ -84,5 +92,32 @@ func main() {
 		os.Exit(1)
 	}
 	defer index.Close()
-	io.Copy(os.Stdout, index)
+	indexStr, err := ioutil.ReadAll(index)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to read index-v1.json: %s\n", err.Error())
+		os.Exit(1)
+	}
+	var indexJson interface{}
+	err = json.Unmarshal(indexStr, &indexJson)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to parse index-v1.json: %s\n", err.Error())
+		os.Exit(1)
+	}
+	iter := query.Run(indexJson)
+	for {
+		v, ok := iter.Next()
+		if !ok {
+			break
+		}
+		if err, ok := v.(error); ok {
+			fmt.Fprintf(os.Stderr, "%s\n", err.Error())
+			os.Exit(1)
+		}
+		b, err := toml.Marshal(v)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%s\n", err.Error())
+			os.Exit(1)
+		}
+		os.Stdout.Write(b)
+	}
 }
