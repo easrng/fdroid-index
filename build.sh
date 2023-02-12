@@ -23,6 +23,7 @@ if [ "$THISHASH" == "$(cat state/lasthash 2>/dev/null || true)" ]; then
 else
   echo "Building search index"
   mkdir out
+  printf "%s" '<!DOCTYPE html><noscript><meta http-equiv="refresh" content="0; url=https://github.com/easrng/fdroid-index#readme"></noscript><script>window.location.replace("https://github.com/easrng/fdroid-index#readme")</script>' >out/index.html
   state/stork build --input index.toml --output - | zstd --ultra -20 - >out/index.zst
   printf "%s" "$THISHASH" >state/lasthash
   sha256sum out/index.zst | awk '{print $1}' >out/hash.txt
