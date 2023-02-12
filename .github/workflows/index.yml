@@ -16,27 +16,34 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-
     - name: Set up state
       uses: actions/cache@v3
       with:
         path: state
         key: state
-        
     - name: Optionally clear cache
       if: ${{ inputs.clear_cache }}
       run: rm state/*
-      
     - name: Set up Go
       uses: actions/setup-go@v3
       with:
         go-version: 1.19
-
     - name: Build index
       run: ./build.sh
-    
-    - name: Upload index
-      uses: actions/upload-artifact@v3.1.2
+    - name: Check file existence
+      id: check_files
+      uses: andstor/file-existence-action@v1
       with:
-        name: index.zst
-        path: index.zst
+        files: "out/index.zst"
+    - name: Setup Pages
+      if: steps.check_files.outputs.files_exists == 'true'
+      uses: actions/configure-pages@v3
+    - name: Upload artifact
+      if: steps.check_files.outputs.files_exists == 'true'
+      uses: actions/upload-pages-artifact@v1
+      with:
+        path: 'out'
+    - name: Deploy to GitHub Pages
+      if: steps.check_files.outputs.files_exists == 'true'
+      id: deployment
+      uses: actions/deploy-pages@v1
