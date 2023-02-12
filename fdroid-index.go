@@ -65,8 +65,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Printf("Verification scheme used: v%d\n", res.SigningSchemeId)
-
 	cert, _ := apkverifier.PickBestApkCert(res.SignerCerts)
 	if cert == nil {
 		fmt.Fprintf(os.Stderr, "Couldn't get signer\n")
