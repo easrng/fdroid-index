@@ -1,5 +1,6 @@
 #!/bin/bash
 set -euo pipefail
+rm -rf out
 mkdir -p state
 if [ ! -f "state/stork" ]; then
   echo "Downloading stork v1.6.0"
@@ -21,8 +22,9 @@ if [ "$THISHASH" == "$(cat state/lasthash 2>/dev/null || true)" ]; then
   echo "No changes since last build"
 else
   echo "Building search index"
-  state/stork build --input index.toml --output - | zstd --ultra -20 - >index.zst
-  printf "%s" "$THISHASH" >state/lasthash
+  mkdir out
+  state/stork build --input index.toml --output - | zstd --ultra -20 - >out/index.zst
+  printf "%s" "$THISHASH" | tee out/hash.txt >state/lasthash
   echo "Built search index"
 fi
 rm index.toml
