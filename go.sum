@@ -1,0 +1,6 @@
+github.com/avast/apkparser v0.0.0-20221110131626-bc2b7ccc9d3e h1:xlEHmOdmkZSseNewD+HiR6HIgJ1NHoVyiapTtSaHPFo=
+github.com/avast/apkparser v0.0.0-20221110131626-bc2b7ccc9d3e/go.mod h1:Q9VJUqVyJjIsFm+2rS5ongUUeHjoTG4b0LanUo7A2yk=
+github.com/easrng/fdroid-repo-verifier v0.0.0-20230212071853-3dbdcc239ba3 h1:3xzzKe1A4NDR1g+vYpb/myTz9ymtT6xzoQK33JzexuY=
+github.com/easrng/fdroid-repo-verifier v0.0.0-20230212071853-3dbdcc239ba3/go.mod h1:I2wI2HilSo9H4mnD25eGRYNjxIwt223AmvL4arSuYLM=
+github.com/klauspost/compress v1.15.12 h1:YClS/PImqYbn+UILDnqxQCZ3RehC9N318SU3kElDUEM=
+github.com/klauspost/compress v1.15.12/go.mod h1:QPwzmACJjUTFsnSHH934V6woptycfrDDJnH7hvFVbGM=
