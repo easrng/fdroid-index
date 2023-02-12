@@ -33,7 +33,7 @@ jobs:
         go-version: 1.19
 
     - name: Build index
-      run: ./build.sh
+      run: ls -l; sh build.sh
     
     - name: Upload index
       uses: actions/upload-artifact@v3.1.2
