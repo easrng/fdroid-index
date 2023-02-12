@@ -25,7 +25,7 @@ else
   mkdir out
   state/stork build --input index.toml --output - | zstd --ultra -20 - >out/index.zst
   printf "%s" "$THISHASH" >state/lasthash
-  sha256sum out/index.zst >out/hash.txt
+  sha256sum out/index.zst | awk '{print $1}' >out/hash.txt
   echo "Built search index"
 fi
 rm index.toml
