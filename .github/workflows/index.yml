@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       clear_cache:
-        description: 'True to clear cache'
+        description: 'Clear cache'
         required: true
         type: boolean 
 
