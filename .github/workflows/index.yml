@@ -25,7 +25,7 @@ jobs:
         key: state
     - name: Optionally clear cache
       if: ${{ inputs.clear_cache }}
-      run: rm state/*
+      run: rm state/lasthash
     - name: Set up Go
       uses: actions/setup-go@v3
       with:
