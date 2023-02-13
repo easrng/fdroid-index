@@ -26,6 +26,7 @@ map(select(.title)) |
 {
   input: {
     url_prefix: "https://f-droid.org/en/packages/",
+    title_boost: "Large",
     files:.
   }
 }
